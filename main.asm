@@ -1,12 +1,11 @@
-org 0x7C00
-use16
+.code16
 
-mov al, '*'
-mov dx, 0x3F8
-out dx, al
+movb $'*', %al
+movw $0x3F8,%dx
+outb %al,%dx
 
-mov al, 0
-out 0xf4, al
+movb $0,%al
+outb %al, $0xf4
 
 cli
 haltloop:

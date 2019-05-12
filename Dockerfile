@@ -1,12 +1,13 @@
 FROM ubuntu:bionic
 
 RUN apt-get update && apt-get install -y \
-    nasm \
+    gcc \
     qemu-system-x86
 
 ADD . /src
 WORKDIR /src
-RUN nasm main.asm -o boot.bin
+RUN gcc -x assembler -c main.asm -o main.o
+RUN objcopy -O binary main.o boot.bin
 
 RUN bash -c 'echo -e \\x55\\xAA | dd of=boot.bin bs=2 count=1 seek=255 2>&1'
 
