@@ -12,6 +12,3 @@ cli
 haltloop:
 hlt
 jmp haltloop
-
-times 510-($-$$) nop
-dw 0AA55h
