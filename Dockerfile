@@ -2,6 +2,7 @@ FROM ubuntu:bionic
 
 RUN apt-get update && apt-get install -y \
     gcc \
+    nasm \
     qemu-system-x86
 
 ADD . /src
