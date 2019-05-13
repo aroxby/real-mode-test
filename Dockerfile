@@ -7,9 +7,12 @@ RUN apt-get update && apt-get install -y \
 
 ADD . /src
 WORKDIR /src
-RUN gcc -c main.c -o main.o
-RUN objcopy -O binary main.o boot.bin
 
+RUN gcc \
+    -O1 -m16 \
+    -c main.c -o main.o
+
+RUN objcopy -j .text -O binary main.o boot.bin
 RUN bash -c 'echo -e \\x55\\xAA | dd of=boot.bin bs=2 count=1 seek=255 2>&1'
 
 CMD qemu-system-x86_64 \
