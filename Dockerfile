@@ -13,6 +13,8 @@ RUN gcc \
     -c main.c -o main.o
 
 RUN objcopy -j .text -O binary main.o boot.bin
+RUN ndisasm boot.bin
+
 RUN bash -c 'echo -e \\x55\\xAA | dd of=boot.bin bs=2 count=1 seek=255 2>&1'
 
 CMD qemu-system-x86_64 \
