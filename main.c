@@ -15,18 +15,35 @@ is ever not inlined.
 */
 #define INLINE __attribute__((always_inline)) inline
 
-INLINE void hlt();
-INLINE void cli();
+INLINE void serial_write(char ch);
+INLINE void stop();
+INLINE void qemu_quit(unsigned char status);
 INLINE void out11(unsigned char value, unsigned char port);
 INLINE void out12(unsigned char value, unsigned short port);
+INLINE void hlt();
+INLINE void cli();
 
 void main() {
-    out12('*', 0x3F8);
-    out11(0, 0xF4);
+    serial_write('*');
+    stop();
+}
+
+INLINE void serial_write(char ch) {
+    const static unsigned short COM1_PORT = 0x3F8;
+    out12(ch, COM1_PORT);
+}
+
+INLINE void stop() {
+    qemu_quit(0);
     cli();
     while(1) {
         hlt();
     }
+}
+
+INLINE void qemu_quit(unsigned char status) {
+    const static unsigned char DEBUG_EXIT_PORT = 0xF4;
+    out11(status, DEBUG_EXIT_PORT);
 }
 
 INLINE void cli() {
