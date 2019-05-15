@@ -23,7 +23,7 @@ INLINE void out12(unsigned char value, unsigned short port);
 INLINE void hlt();
 INLINE void cli();
 
-void main() {
+void boot() {
     serial_write('*');
     stop();
 }
